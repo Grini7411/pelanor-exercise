@@ -11,6 +11,7 @@ const getUserEdge = (): Edge[] => {
             id: `user-info->${user.id}`,
             source: "user-info",
             sourceHandle: user.id,
+            label: 'Reads from',
             target: user.id,
             animated: true
         };
@@ -35,6 +36,7 @@ const getQueryEdge = (): Edge[] => {
             id: `user-info->${query.id}`,
             source: "user-info",
             sourceHandle: query.id,
+            label: 'Queries from',
             target: query.id,
             animated: true
         };
@@ -42,6 +44,7 @@ const getQueryEdge = (): Edge[] => {
         const edgeFromQuery: Edge = {
             id: `${query.id}->user-db`,
             source: query.id,
+            label: 'Executes on',
             target: "user-db",
             animated: false,
         }
@@ -53,7 +56,7 @@ const getQueryEdge = (): Edge[] => {
 
 
 export const initialEdges = [
-    { id: "prod-cluster->user-info", source: "prod-cluster", target: "user-info"},
+    { id: "prod-cluster->user-info", source: "prod-cluster", target: "user-info", label: 'contains'},
     { id: "prod-cluster->analytics-data", source: "prod-cluster", target: "analytics-data" , animated: true},
     ...getUserEdge(),
     ...getQueryEdge()
