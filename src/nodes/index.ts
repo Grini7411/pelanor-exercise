@@ -1,14 +1,12 @@
 import {Node, NodeTypes, Position} from "reactflow";
-import {PositionLoggerNode} from "./PositionLoggerNode";
-import {UserFileNode} from "./components/UserFileNode.tsx";
 import {users} from "../users/users.ts";
-import {UserInfoNode} from "./components/UserInfoNode.tsx";
+import {UserInfoNode, UserInfoNodeData} from "./components/UserInfoNode.tsx";
 import {queries} from "../queries/query.ts";
+import {NodeWrapper, NodeWrapperData} from "./components/NodeWrapper.tsx";
 
 export const nodeTypes = {
-  "position-logger": PositionLoggerNode,
-  "user-file": UserFileNode,
   "user-info": UserInfoNode,
+  "node-wrapper": NodeWrapper
 } satisfies NodeTypes;
 
 export const getUsersNodes = () => {
@@ -17,7 +15,7 @@ export const getUsersNodes = () => {
       id: user.id,
       targetPosition: Position.Top,
       data: { label: user.path},
-      position: { x: index * 150 - 250, y: 200 }
+      position: { x: index * 150 - 250, y: 250 }
     }
   })
 }
@@ -28,7 +26,7 @@ export const getQueryNodes = () => {
       id: query.id,
       targetPosition: Position.Top,
       data: { label: query.text },
-      position: { x: (index+1) * 400 - 250, y: 200 }
+      position: { x: (index+3) * 150 - 250, y: 250 }
     }
   })
 }
@@ -36,34 +34,83 @@ export const getQueryNodes = () => {
 export const initialNodes = [
   {
     id: "prod-cluster",
-    type: "input",
-    position: { x: 0, y: 0 },
-    data: { label: "pelanor-production-cluster (ECS-Cluster)" } },
+    position: { x: -50, y: -100 },
+    type: "node-wrapper",
+    data: {
+      isRoot: true,
+      isLeaf: false,
+      nodeConfig: {
+        itemTitle: "pelanor-production-cluster",
+        icon: '/assets/icons/ecs.svg',
+        type: 'ECS-Cluster',
+      },
+      label: ''
+    }
+  },
   {
     id: "user-info",
     position: { x: -100, y: 100 },
     type: "user-info",
-    data: { label: "user-info (ECS-Service)", users, queries }
+    data: {
+      label: "",
+      users,
+      queries,
+      nodeConfig: {
+        itemTitle: "user-info",
+        icon: '/assets/icons/ecs-service.svg',
+        type: 'ECS-Service',
+      },
+    }
   },
   {
     id: "analytics-data",
     position: { x: 100, y: 100 },
-    data: { label: "analytics-data (ECS-Service)" },
+    type: "node-wrapper",
+    data: {
+      label: "",
+      isRoot: false,
+      isLeaf: true,
+      nodeConfig: {
+        itemTitle: "analytics-data",
+        icon: '/assets/icons/ecs-service.svg',
+        type: 'ECS-Service',
+      },
+    },
   },
   ...getUsersNodes(),
   {
     id: "pelanor-data",
     position: { x: -100, y: 400 },
     targetPosition: Position.Top,
-    data: { label: "pelanor-data (S3-bucket)" },
+    type: "node-wrapper",
+    data: {
+      label: "",
+      isRoot: false,
+      isLeaf: true,
+      nodeConfig: {
+        itemTitle: "pelanor-data",
+        icon: '/assets/icons/s3.svg',
+        type: 'S3-bucket',
+      },
+    },
   },
   ...getQueryNodes(),
   {
     id: "user-db",
-    position: { x: 400, y: 400 },
+    position: { x: 300, y: 400 },
     targetPosition: Position.Top,
-    data: { label: "user-db (RDS database)" },
+    type: "node-wrapper",
+    data: {
+      label: "",
+      isRoot: false,
+      isLeaf: true,
+      nodeConfig: {
+        itemTitle: "user-db",
+        icon: '/assets/icons/rds.svg',
+        type: 'RDS database',
+      },
+    },
   }
-] satisfies Node[];
+] satisfies Node<NodeWrapperData | UserInfoNodeData | unknown>[];
 
 

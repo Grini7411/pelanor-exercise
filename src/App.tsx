@@ -25,8 +25,7 @@ export default function App() {
       edgeTypes={edgeTypes}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
-      fitView
-    >
+      fitView>
       <Background />
       <MiniMap />
       <Controls />
