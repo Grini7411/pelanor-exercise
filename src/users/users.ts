@@ -1,4 +1,4 @@
-import {UserType} from "./user.type.ts";
+import {User} from "./user.ts";
 
 export const users = [
     {
@@ -13,4 +13,4 @@ export const users = [
         id: "user3",
         path: "profile/user3.webp"
     }
-] satisfies UserType[];
+] satisfies User[];
